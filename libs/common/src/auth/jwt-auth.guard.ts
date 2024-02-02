@@ -1,25 +1,47 @@
-import { CanActivate, ExecutionContext,Inject, Injectable } from "@nestjs/common";
-import { Observable, tap, map } from "rxjs";
-import { AUTH_SERVICE } from "@app/common/constants/services";
-import { ClientProxy } from "@nestjs/microservices";
+import {
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
+import { Observable, tap, map, catchError, of } from 'rxjs';
+import { AUTH_SERVICE } from '../constants/services';
+import { ClientProxy } from '@nestjs/microservices';
+import { UserDto } from '@app/common/dto';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(@Inject(AUTH_SERVICE) private readonly authClient: ClientProxy) {}
+  private readonly logger = new Logger(JwtAuthGuard.name);
+  constructor(@Inject(AUTH_SERVICE) private readonly authClient: ClientProxy) {
+    console.log('JwtAuthGuard constructor called');
+  }
   canActivate(
-      context: ExecutionContext,
-    ): boolean | Promise<boolean> | Observable<boolean> {
-      const jwt = context.switchToHttp().getRequest().cookies?.Authentication;
-      if (!jwt) {
-        return false;
-      }
-      return this.authClient.send('authenticate', {
+    context: ExecutionContext,
+  ): boolean | Promise<boolean> | Observable<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const jwt =
+      request.cookies?.Authentication || request.headers?.Authentication;
+    this.logger.log(`Recieved JWT token: ${jwt}`);
+    if (!jwt) {
+      return false;
+    }
+    return this.authClient
+      .send<UserDto>('authenticate', {
         Authentication: jwt,
-      }).pipe(
+      })
+      .pipe(
         tap((res) => {
+          this.logger.log(
+            `Recieved response from authentication service: ${res}`,
+          );
           context.switchToHttp().getRequest().user = res;
         }),
-        map(() => true)
-      )
+        map(() => true),
+        catchError((err) => {
+          this.logger.error(`Error during authentication: ${err}`);
+          return of(false);
+        }),
+      );
   }
 }
