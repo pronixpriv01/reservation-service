@@ -10,6 +10,7 @@ import {
 } from './models/reservation.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigServiceInterface } from "@app/common/secrets/config-service.interface";
 
 @Module({
   imports: [
@@ -55,6 +56,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ]),
   ],
   controllers: [ReservationsController],
-  providers: [ReservationsService, ReservationsRepository],
+  providers: [
+    {
+      provide: ConfigService,
+      useClass: ConfigServiceInterface,
+    },
+    ReservationsService, ReservationsRepository
+  ],
 })
 export class ReservationsModule {}
