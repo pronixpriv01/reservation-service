@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ModelDefinition, MongooseModule } from "@nestjs/mongoose";
+import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
