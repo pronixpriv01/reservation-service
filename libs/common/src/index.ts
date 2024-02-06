@@ -5,3 +5,4 @@ export * from './logger';
 export * from './decorators';
 export * from './dto'
 export * from './models';
+export * from './secrets';

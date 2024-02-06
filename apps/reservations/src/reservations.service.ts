@@ -1,43 +1,38 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from "@nestjs/common";
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationsRepository } from './reservations.repository';
-import { UserDto } from '@app/common';
+import { PAYMENTS_SERVICE, UserDto } from "@app/common";
+import { ClientProxy } from "@nestjs/microservices";
+import { map } from "rxjs";
 
 @Injectable()
 export class ReservationsService {
   constructor(
     private readonly reservationsRepository: ReservationsRepository,
+    @Inject(PAYMENTS_SERVICE) private readonly paymentsService: ClientProxy,
   ) {}
 
   async create(
     createReservationDto: CreateReservationDto,
-    { _id: userId }: UserDto,
+    { email, _id: userId }: UserDto,
   ) {
-    // Dummy-Implementierung für das Zahlungsservice
-    const dummyPaymentResponse = { id: 'dummy_payment_id' };
-
-    // Simulieren des zahlungsservice-Aufrufs und Erstellen der Reservierung
-    return this.handlePaymentResponse(
-      dummyPaymentResponse,
-      createReservationDto,
-      userId,
-    );
-  }
-
-  // dummy
-  private async handlePaymentResponse(
-    paymentResponse: any,
-    createReservationDto: CreateReservationDto,
-    userId: string,
-  ) {
-    return this.reservationsRepository.create({
-      _id: undefined,
-      ...createReservationDto,
-      invoiceId: paymentResponse.id,
-      timestamp: new Date(),
-      userId,
-    });
+    return this.paymentsService
+      .send('create_charge', {
+        ...createReservationDto.charge,
+        email,
+      })
+      .pipe(
+        map((res) => {
+          return this.reservationsRepository.create({
+            _id: undefined,
+            ...createReservationDto,
+            invoiceId: res.id,
+            timestamp: new Date(),
+            userId
+          });
+        }),
+      );
   }
 
   async findAll() {
