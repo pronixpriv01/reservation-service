@@ -5,43 +5,78 @@ services:
       dockerfile: ./apps/reservations/Dockerfile
       target: development
     command: npm run start:dev reservations
-    env_file:
-      - ./apps/reservations/.env
     ports:
       - '3000:3000'
     volumes:
       - .:/usr/src/app
+    secrets:
+      - mongo_db_uri
+      - reservations_port
+      - payments_host
+      - payments_port
   auth:
     build:
       context: .
       dockerfile: ./apps/auth/Dockerfile
       target: development
     command: npm run start:dev auth
-    env_file:
-      - ./apps/auth/.env
     ports:
       - '3001:3001'
     volumes:
       - .:/usr/src/app
+    secrets:
+      - mongo_db_uri
+      - jwt_secret
+      - jwt_expiration
+      - http_port
+      - tcp_port
   payments:
     build:
       context: .
       dockerfile: ./apps/payments/Dockerfile
       target: development
     command: npm run start:dev payments
-    env_file:
-      - ./apps/payments/.env
     volumes:
       - .:/usr/src/app
+    secrets:
+      - stripe_secret_key
+      - payments_port
+      - notifications_host
+      - notifications_port
   notifications:
     build:
       context: .
       dockerfile: ./apps/payments/Dockerfile
       target: development
     command: npm run start:dev notifications
-    env_file:
-      - ./apps/notifications/.env
     volumes:
       - .:/usr/src/app
+    secrets:
+      - notifications_host
+      - notifications_port
   mongo:
     image: mongo
+
+secrets:
+  mongo_db_uri:
+    external: true
+  reservations_port:
+    external: true
+  payments_host:
+    external: true
+  payments_port:
+    external: true
+  stripe_seret_key:
+    external: true
+  notifications_host:
+    external: true
+  notifications_port:
+    external: true
+  jwt_secret:
+    external: true
+  jwt_expiration:
+    external: true
+  http_port:
+    external: true
+  tcp_port:
+    external: true
