@@ -2,7 +2,12 @@ import { Module } from '@nestjs/common';
 import * as Joi from 'joi';
 import { ReservationsService } from './reservations.service';
 import { ReservationsController } from './reservations.controller';
-import { AUTH_SERVICE, DatabaseModule, LoggerModule, PAYMENTS_SERVICE } from "@app/common";
+import {
+  AUTH_SERVICE,
+  DatabaseModule,
+  LoggerModule,
+  PAYMENTS_SERVICE,
+} from '@app/common';
 import { ReservationsRepository } from './reservations.repository';
 import {
   ReservationDocument,
@@ -10,7 +15,7 @@ import {
 } from './models/reservation.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { CustomConfigService } from "@app/common/secrets/CustomConfigService";
+import { CustomConfigService } from '@app/common/secrets/CustomConfigService';
 
 @Module({
   imports: [
@@ -61,7 +66,8 @@ import { CustomConfigService } from "@app/common/secrets/CustomConfigService";
       provide: ConfigService,
       useClass: CustomConfigService,
     },
-    ReservationsService, ReservationsRepository
+    ReservationsService,
+    ReservationsRepository,
   ],
 })
 export class ReservationsModule {}

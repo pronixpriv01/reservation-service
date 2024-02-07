@@ -18,7 +18,9 @@ function getConfigurationValue(secretName: string): string {
     // Wenn das Secret nicht als Datei vorliegt, greife auf die Umgebungsvariable zurück
     const envValue = process.env[secretName];
     if (envValue === undefined) {
-      throw new Error(`Neither secret nor environment variable set for '${secretName}'`);
+      throw new Error(
+        `Neither secret nor environment variable set for '${secretName}'`,
+      );
     }
     return envValue;
   }
