@@ -5,12 +5,17 @@ ARG APP_DIR_PATH=/usr/src/app
 WORKDIR ${APP_DIR_PATH}
 
 COPY package.json package-lock.json ./
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 RUN npm install
 
-COPY . .
+COPY apps/payments apps/payments
+COPY libs libs
 
-RUN npm run build
+RUN npm install -r
+
+RUN npm run build payments
 
 FROM node:alpine as procuction
 
