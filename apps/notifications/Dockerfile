@@ -10,7 +10,7 @@ COPY nest-cli.json nest-cli.json
 
 RUN npm install
 
-COPY apps/notifications apps/notifications
+COPY apps/notifications apps/notificatieeeeons
 COPY libs libs
 
 RUN npm install -r
@@ -30,5 +30,5 @@ COPY package.json package-lock.json ./
 RUN npm install --only=production
 
 COPY --from=development ${APP_DIR_PATH}/dist ./dist
-
+e
 CMD ["node", "dist/apps/notifications/main"]
