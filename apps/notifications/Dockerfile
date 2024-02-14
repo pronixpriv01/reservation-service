@@ -10,7 +10,7 @@ COPY nest-cli.json nest-cli.json
 
 RUN npm install
 
-COPY apps/notifications apps/notificatieeeeons
+COPY apps/notifications apps/notifications
 COPY libs libs
 
 RUN npm install -r
