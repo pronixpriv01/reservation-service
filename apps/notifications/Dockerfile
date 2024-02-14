@@ -30,5 +30,5 @@ COPY package.json package-lock.json ./
 RUN npm install --only=production
 
 COPY --from=development ${APP_DIR_PATH}/dist ./dist
-e
+
 CMD ["node", "dist/apps/notifications/main"]
