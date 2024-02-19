@@ -15,7 +15,7 @@ import {
 } from './models/reservation.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { CustomConfigService } from '@app/common/secrets/CustomConfigService';
+import { HealthModule } from '@app/common/health/health.module';
 
 @Module({
   imports: [
@@ -59,15 +59,9 @@ import { CustomConfigService } from '@app/common/secrets/CustomConfigService';
         inject: [ConfigService],
       },
     ]),
+    HealthModule,
   ],
   controllers: [ReservationsController],
-  providers: [
-    {
-      provide: ConfigService,
-      useClass: CustomConfigService,
-    },
-    ReservationsService,
-    ReservationsRepository,
-  ],
+  providers: [ReservationsService, ReservationsRepository],
 })
 export class ReservationsModule {}
