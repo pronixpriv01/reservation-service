@@ -5,6 +5,7 @@ import { ReservationsController } from './reservations.controller';
 import {
   AUTH_SERVICE,
   DatabaseModule,
+  HealthModule,
   LoggerModule,
   PAYMENTS_SERVICE,
 } from '@app/common';
@@ -15,8 +16,6 @@ import {
 } from './models/reservation.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { HealthModule } from '@app/common/health/health.module';
-
 @Module({
   imports: [
     DatabaseModule,
