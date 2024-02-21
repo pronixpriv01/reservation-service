@@ -1,9 +1,5 @@
 import { Module } from '@nestjs/common';
-<<<<<<< HEAD
 import { HealthModule, LoggerModule } from '@app/common';
-=======
-import { LoggerModule } from '@app/common';
->>>>>>> origin/master
 import { JwtModule } from '@nestjs/jwt';
 import * as Joi from 'joi';
 import { AuthController } from './auth.controller';
@@ -12,10 +8,6 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-<<<<<<< HEAD
-=======
-import { HealthModule } from '@app/common/health/health.module';
->>>>>>> origin/master
 
 @Module({
   imports: [

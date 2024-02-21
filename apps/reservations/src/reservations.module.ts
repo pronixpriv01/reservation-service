@@ -16,11 +16,6 @@ import {
 } from './models/reservation.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-<<<<<<< HEAD
-=======
-import { HealthModule } from '@app/common/health/health.module';
-
->>>>>>> origin/master
 @Module({
   imports: [
     DatabaseModule,
