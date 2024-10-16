@@ -6,6 +6,7 @@ import { PaymentsCreateChargeDto } from './dto/payments-create-charge';
 
 @Controller()
 export class PaymentsController {
+  [x: string]: any;
   constructor(private readonly paymentsService: PaymentsService) {}
 
   @MessagePattern('create_charge')

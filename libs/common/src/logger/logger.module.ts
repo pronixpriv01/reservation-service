@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { LoggerModule as PinoLoggerModule } from "nestjs-pino";
+import { LoggerModule as PinoLoggerModule } from 'nestjs-pino';
 @Module({
   imports: [
     PinoLoggerModule.forRoot({
@@ -8,10 +8,10 @@ import { LoggerModule as PinoLoggerModule } from "nestjs-pino";
           target: 'pino-pretty',
           options: {
             singleLine: true,
-          }
-        }
-      }
+          },
+        },
+      },
     }),
-  ]
+  ],
 })
 export class LoggerModule {}
